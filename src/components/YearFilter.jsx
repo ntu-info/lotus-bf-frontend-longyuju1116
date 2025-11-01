@@ -97,23 +97,33 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
 
   // 預設選取所有年份（只在初始載入時，或關鍵字改變時）
   useEffect(() => {
-    // 如果關鍵字改變了，重置 hasClearedRef 並自動選取所有年份
+    // 如果關鍵字改變了，重置 hasClearedRef
     if (prevQueryRef.current !== query) {
       hasClearedRef.current = false
       prevQueryRef.current = query
-      if (yearStats.length > 0) {
+    }
+  }, [query])
+
+  // 當 searchResults 更新時（表示新 query 的數據已載入），如果未清除過，自動選取所有年份
+  useEffect(() => {
+    // 如果有 query 且有搜尋結果，表示這是基於當前 query 的數據
+    // 如果未清除過，自動選取所有年份
+    if (query && searchResults && searchResults.length > 0 && !hasClearedRef.current && yearStats.length > 0) {
         const allYears = yearStats.map(s => String(s.year))
+      // 只有在當前選中的年份與全部年份不同時才更新，避免不必要的重渲染
+      const currentSet = new Set(selectedYears)
+      const allYearsSet = new Set(allYears)
+      if (currentSet.size !== allYearsSet.size || 
+          !allYears.every(y => currentSet.has(y))) {
         onYearsChange(allYears)
       }
-      return
     }
-    
-    // 只在初始載入且未清除過時自動選取
-    if (yearStats.length > 0 && selectedYears.length === 0 && !hasClearedRef.current) {
+    // 只在初始載入且未清除過時自動選取（當沒有 query 時）
+    else if (!query && yearStats.length > 0 && selectedYears.length === 0 && !hasClearedRef.current) {
       const allYears = yearStats.map(s => String(s.year))
       onYearsChange(allYears)
     }
-  }, [yearStats, selectedYears, onYearsChange, query])
+  }, [yearStats, selectedYears, onYearsChange, query, searchResults])
 
   const maxCount = useMemo(() => {
     if (yearStats.length === 0) return 1

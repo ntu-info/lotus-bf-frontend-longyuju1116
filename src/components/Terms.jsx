@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import './Terms.css'
+import { ClearButton } from './ClearButton'
+import { Pagination } from './Pagination'
 
-export function Terms ({ onPickTerm }) {
+export function Terms ({ onPickTerm, onEasterEgg }) {
   const [terms, setTerms] = useState([])
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState('')
   const [page, setPage] = useState(1)
-  const [pageInput, setPageInput] = useState('1')
   const rowsPerPage = 3 // 每頁顯示 3 行
   const estimatedItemsPerRow = 10 // 估計每行可以顯示的數量（用於計算分頁）- 減半後約每頁 30 個
 
@@ -58,29 +59,6 @@ export function Terms ({ onPickTerm }) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
-  const handlePageJump = () => {
-    const pageNum = parseInt(pageInput, 10)
-    if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages && pageNum !== page) {
-      setPage(pageNum)
-    }
-  }
-
-  const handlePageInputKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handlePageJump()
-      e.target.blur()
-    }
-  }
-
-  const handlePageInputBlur = () => {
-    handlePageJump()
-  }
-
-  // Sync pageInput with page
-  useEffect(() => {
-    setPageInput(String(page))
-  }, [page])
-
   return (
     <div className="terms">
       <div className="terms__header">
@@ -95,23 +73,26 @@ export function Terms ({ onPickTerm }) {
               setSearch(e.target.value)
               setPage(1)
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const trimmedSearch = search.trim()
+                // 檢查是否搜尋 "LoTUS-BF" (不區分大小寫)
+                if (trimmedSearch.toLowerCase() === 'lotus-bf' && onEasterEgg) {
+                  onEasterEgg()
+                }
+              }
+            }}
             placeholder="Search terms…"
             className="terms__input"
           />
           {search && (
-            <button
+            <ClearButton
               onClick={() => {
                 setSearch('')
                 setPage(1)
               }}
-              className="terms__clear-icon"
-              aria-label="Clear search"
-              type="button"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="18" height="18">
-                <path d="M 25 2 C 12.309534 2 2 12.309534 2 25 C 2 37.690466 12.309534 48 25 48 C 37.690466 48 48 37.690466 48 25 C 48 12.309534 37.690466 2 25 2 z M 25 4 C 36.609534 4 46 13.390466 46 25 C 46 36.609534 36.609534 46 25 46 C 13.390466 46 4 36.609534 4 25 C 4 13.390466 13.390466 4 25 4 z M 32.990234 15.986328 A 1.0001 1.0001 0 0 0 32.292969 16.292969 L 25 23.585938 L 17.707031 16.292969 A 1.0001 1.0001 0 0 0 16.990234 15.990234 A 1.0001 1.0001 0 0 0 16.292969 17.707031 L 23.585938 25 L 16.292969 32.292969 A 1.0001 1.0001 0 1 0 17.707031 33.707031 L 25 26.414062 L 32.292969 33.707031 A 1.0001 1.0001 0 1 0 33.707031 32.292969 L 26.414062 25 L 33.707031 17.707031 A 1.0001 1.0001 0 0 0 32.990234 15.986328 z" fill="currentColor"/>
-              </svg>
-            </button>
+              ariaLabel="Clear search"
+            />
           )}
         </div>
       </div>
@@ -154,51 +135,15 @@ export function Terms ({ onPickTerm }) {
           </div>
 
           {totalPages > 1 && (
-            <div className="terms__pagination">
+            <div className="terms__pagination-wrapper">
               <div className="terms__pagination-info">
-                <b>{formatNumber(totalItems)}</b> results, page{' '}
-                <input
-                  type="number"
-                  min="1"
-                  max={totalPages}
-                  value={pageInput}
-                  onChange={(e) => setPageInput(e.target.value)}
-                  onKeyDown={handlePageInputKeyDown}
-                  onBlur={handlePageInputBlur}
-                  className="terms__page-input"
-                />
-                {' '}/ <b>{totalPages}</b>
+                <b>{formatNumber(totalItems)}</b> results
               </div>
-              <div className="terms__pagination-controls">
-                <button 
-                  disabled={page <= 1} 
-                  onClick={() => setPage(1)}
-                  className="terms__pagination-button"
-                >
-                  &lt;&lt;
-                </button>
-                <button 
-                  disabled={page <= 1} 
-                  onClick={() => setPage(p => Math.max(1, p - 1))}
-                  className="terms__pagination-button"
-                >
-                  &lt;
-                </button>
-                <button 
-                  disabled={page >= totalPages} 
-                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                  className="terms__pagination-button"
-                >
-                  &gt;
-                </button>
-                <button 
-                  disabled={page >= totalPages} 
-                  onClick={() => setPage(totalPages)}
-                  className="terms__pagination-button"
-                >
-                  &gt;&gt;
-                </button>
-              </div>
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
             </div>
           )}
         </>

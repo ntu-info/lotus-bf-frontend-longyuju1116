@@ -1,12 +1,17 @@
 .app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   margin-bottom: 20px;
   padding-bottom: 16px;
   border-bottom: 2px solid var(--border);
-  background: white;
-  border-radius: var(--radius);
+  background: #C7C7E2;
+  border-radius: 0;
   padding: 16px 20px;
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.3s ease;
+  z-index: 1000;
 }
 
 .app-header:hover {

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, useRef } from 'react'
 import './Studies.css'
 import { PageSizeSelector } from './PageSizeSelector'
 import { YearFilter } from './YearFilter'
+import { Pagination } from './Pagination'
 
 function classNames (...xs) { return xs.filter(Boolean).join(' ') }
 
@@ -14,7 +15,6 @@ export function Studies ({ query }) {
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)
   const [selectedYears, setSelectedYears] = useState([])
-  const [pageInput, setPageInput] = useState('1')
   const tableTopRef = useRef(null)
 
   // Helper function to get PubMed URL
@@ -107,29 +107,6 @@ export function Studies ({ query }) {
   const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize))
   const pageRows = sorted.slice((page - 1) * pageSize, page * pageSize)
 
-  const handlePageJump = () => {
-    const pageNum = parseInt(pageInput, 10)
-    if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages && pageNum !== page) {
-      handlePageChange(pageNum)
-    }
-  }
-
-  const handlePageInputKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handlePageJump()
-      e.target.blur() // 讓輸入框失去焦點
-    }
-  }
-
-  const handlePageInputBlur = () => {
-    handlePageJump()
-  }
-
-  // 當頁碼改變時，同步更新輸入框（但只在不是用戶正在輸入時）
-  useEffect(() => {
-    setPageInput(String(page))
-  }, [page])
-
   return (
     <div className="studies">
       <YearFilter 
@@ -142,50 +119,16 @@ export function Studies ({ query }) {
       {query && !loading && !err && (
         <div className="studies__header" ref={tableTopRef}>
           <div className="studies__header-info">
-            <b>{sorted.length}</b> results, page{' '}
-            <input
-              type="number"
-              min="1"
-              max={totalPages}
-              value={pageInput}
-              onChange={(e) => setPageInput(e.target.value)}
-              onKeyDown={handlePageInputKeyDown}
-              onBlur={handlePageInputBlur}
-              className="studies__page-input"
-            />
-            {' '}/ <b>{totalPages}</b>
+            <b>{sorted.length}</b> results
           </div>
           <PageSizeSelector pageSize={pageSize} onChange={setPageSize} />
-          <div className="studies__header-controls">
-            <button 
-              disabled={page <= 1} 
-              onClick={() => handlePageChange(1)}
-              className="studies__pagination-button"
-            >
-              &lt;&lt;
-            </button>
-            <button 
-              disabled={page <= 1} 
-              onClick={() => handlePageChange(Math.max(1, page - 1))}
-              className="studies__pagination-button"
-            >
-              &lt;
-            </button>
-            <button 
-              disabled={page >= totalPages} 
-              onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
-              className="studies__pagination-button"
-            >
-              &gt;
-            </button>
-            <button 
-              disabled={page >= totalPages} 
-              onClick={() => handlePageChange(totalPages)}
-              className="studies__pagination-button"
-            >
-              &gt;&gt;
-            </button>
-          </div>
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       )}
 
@@ -299,52 +242,16 @@ export function Studies ({ query }) {
         </div>
       )}
 
-      {query && !loading && !err && (
+      {query && !loading && !err && totalPages > 1 && (
         <div className="studies__pagination">
           <div className="studies__pagination-info">
-            <b>{sorted.length}</b> results, page{' '}
-            <input
-              type="number"
-              min="1"
-              max={totalPages}
-              value={pageInput}
-              onChange={(e) => setPageInput(e.target.value)}
-              onKeyDown={handlePageInputKeyDown}
-              onBlur={handlePageInputBlur}
-              className="studies__page-input"
-            />
-            {' '}/ <b>{totalPages}</b>
+            <b>{sorted.length}</b> results
           </div>
-          <div className="studies__pagination-controls">
-            <button 
-              disabled={page <= 1} 
-              onClick={() => handlePageChange(1)}
-              className="studies__pagination-button"
-            >
-              &lt;&lt;
-            </button>
-            <button 
-              disabled={page <= 1} 
-              onClick={() => handlePageChange(Math.max(1, page - 1))}
-              className="studies__pagination-button"
-            >
-              &lt;
-            </button>
-            <button 
-              disabled={page >= totalPages} 
-              onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
-              className="studies__pagination-button"
-            >
-              &gt;
-            </button>
-            <button 
-              disabled={page >= totalPages} 
-              onClick={() => handlePageChange(totalPages)}
-              className="studies__pagination-button"
-            >
-              &gt;&gt;
-            </button>
-          </div>
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       )}
     </div>

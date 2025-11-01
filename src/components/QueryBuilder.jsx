@@ -1,4 +1,5 @@
 import './QueryBuilder.css'
+import { ClearButton } from './ClearButton'
 
 export function QueryBuilder({ query, setQuery }) {
   const append = (token) => setQuery((q) => (q ? `${q} ${token}` : token));
@@ -12,6 +13,7 @@ export function QueryBuilder({ query, setQuery }) {
 
   return (
     <div className="query-builder">
+      <div className="query-builder__input-wrapper">
       <input
         value={query || ''}
         onChange={(e) => setQuery(e.target.value)}
@@ -19,6 +21,13 @@ export function QueryBuilder({ query, setQuery }) {
         placeholder="Create a query here, e.g.: [-22,-4,18] NOT emotion"
         className="query-builder__input"
       />
+        {query && (
+          <ClearButton
+            onClick={() => setQuery('')}
+            ariaLabel="Clear query"
+          />
+        )}
+      </div>
 
       <div className="query-builder__toolbar">
         {[
@@ -27,7 +36,6 @@ export function QueryBuilder({ query, setQuery }) {
           { label: 'NOT', onClick: () => append('NOT') },
           { label: '(', onClick: () => append('(') },
           { label: ')', onClick: () => append(')') },
-          { label: 'Reset', onClick: () => setQuery('') },
         ].map((b) => (
           <button
             key={b.label}

@@ -6,27 +6,19 @@
   touch-action: none;
   align-self: stretch;
   background: transparent;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, width 0.2s ease;
+  z-index: 10;
+  margin: 0 -4px;
 }
 
 .resizer:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: linear-gradient(to right, transparent 0%, #ECF5FF 50%, transparent 100%);
+  width: 16px;
 }
 
-.resizer::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 3px;
-  width: 2px;
-  background: var(--border);
-  transition: background 0.15s ease, width 0.15s ease;
-}
-
-.resizer:hover::after {
-  background: var(--fg-dark);
-  width: 3px;
+.resizer--dragging {
+  background: linear-gradient(to right, transparent 0%, #ECF5FF 50%, transparent 100%);
+  width: 16px;
 }
 
 @media (max-width: 1023px) {

@@ -5,9 +5,16 @@
   gap: 12px;
 }
 
+.query-builder__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .query-builder__input {
   width: 100%;
-  padding: 10px 14px;
+  padding: 10px 40px 10px 14px;
   border: 2px solid var(--border);
   border-radius: 12px;
   outline: none;

@@ -45,40 +45,6 @@
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
-.terms__clear-icon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #666 !important;
-  cursor: pointer;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  opacity: 1;
-}
-
-.terms__clear-icon:hover {
-  color: #666 !important;
-}
-
-.terms__clear-icon svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  color: inherit;
-}
-
-.terms__clear-icon svg path {
-  fill: currentColor;
-}
-
 .terms__skeleton {
   display: flex;
   flex-direction: column;
@@ -146,24 +112,25 @@
   transition: all 0.15s ease;
   cursor: pointer;
   border: none;
-  background: radial-gradient(circle, rgba(196, 225, 255, 0.4), rgba(255, 255, 255, 0.2));
+  background: radial-gradient(circle, #E0E0E0 0%, transparent 100%);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .terms__name:hover {
-  background: radial-gradient(circle, rgba(196, 225, 255, 0.5), rgba(255, 255, 255, 0.3));
+  background: radial-gradient(circle, #E0E0E0 0%, transparent 100%);
   color: var(--fg);
   border: none;
   transform: translateY(-1px);
 }
 
-.terms__pagination {
+.terms__pagination-wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding-top: 16px;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .terms__pagination-info {
@@ -174,50 +141,6 @@
 .terms__pagination-info b {
   color: var(--fg-dark);
   font-weight: 600;
-}
-
-.terms__page-input {
-  width: 50px;
-  padding: 4px 6px;
-  border: none;
-  border-radius: 4px;
-  font-size: 13px;
-  text-align: center;
-  background: white;
-  color: var(--fg);
-  font-weight: 600;
-}
-
-.terms__page-input:focus {
-  outline: none;
-}
-
-.terms__pagination-controls {
-  display: flex;
-  gap: 8px;
-}
-
-.terms__pagination-button {
-  padding: 6px 12px;
-  background: var(--fg-dark);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  outline: none;
-}
-
-.terms__pagination-button:hover:not(:disabled) {
-  background: var(--muted);
-  transform: translateY(-1px);
-}
-
-.terms__pagination-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  transform: none;
 }
 
 @media (max-width: 768px) {

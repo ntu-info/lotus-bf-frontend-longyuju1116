@@ -193,8 +193,25 @@ const coord2idx = (c_mm, n, axis) => {
         // Always prefer BG dims for the canvas
         setDims(bg.dims)
         const [nx,ny,nz] = bg.dims
-        const mx = Math.floor(nx/2), my = Math.floor(ny/2), mz = Math.floor(nz/2)
-        setIx(mx); setIy(my); setIz(mz)
+        const [vx, vy, vz] = bg.voxelMM
+        // Set coordinates to 0,0,0 instead of middle
+        const isStd = isStandardMNI2mm([nx, ny, nz], [vx, vy, vz])
+        if (isStd) {
+          // For standard MNI, calculate indices for coordinates 0,0,0
+          // x = -2*i + 90, so when x=0: i = 45
+          // y = 2*j - 126, so when y=0: j = 63
+          // z = 2*k - 72, so when z=0: k = 36
+          const ix0 = Math.round((MNI2MM.x0 - 0) / MNI2MM.vx)
+          const iy0 = Math.round((0 - MNI2MM.y0) / MNI2MM.vy)
+          const iz0 = Math.round((0 - MNI2MM.z0) / MNI2MM.vz)
+          setIx(Math.max(0, Math.min(nx-1, ix0)))
+          setIy(Math.max(0, Math.min(ny-1, iy0)))
+          setIz(Math.max(0, Math.min(nz-1, iz0)))
+        } else {
+          // For non-standard, use middle voxel (which should be close to 0,0,0)
+          const mx = Math.floor(nx/2), my = Math.floor(ny/2), mz = Math.floor(nz/2)
+          setIx(mx); setIy(my); setIz(mz)
+        }
       } catch (e) {
         if (!alive) return
         setErrBG(e?.message || String(e))
@@ -237,8 +254,21 @@ const coord2idx = (c_mm, n, axis) => {
         if (!bgRef.current) {
           setDims(mv.dims)
           const [nx,ny,nz] = mv.dims
-          const mx = Math.floor(nx/2), my = Math.floor(ny/2), mz = Math.floor(nz/2)
-          setIx(mx); setIy(my); setIz(mz)
+          const [vx, vy, vz] = mv.voxelMM
+          // Set coordinates to 0,0,0 instead of middle
+          const isStd = isStandardMNI2mm([nx, ny, nz], [vx, vy, vz])
+          if (isStd) {
+            // For standard MNI, calculate indices for coordinates 0,0,0
+            const ix0 = Math.round((MNI2MM.x0 - 0) / MNI2MM.vx)
+            const iy0 = Math.round((0 - MNI2MM.y0) / MNI2MM.vy)
+            const iz0 = Math.round((0 - MNI2MM.z0) / MNI2MM.vz)
+            setIx(Math.max(0, Math.min(nx-1, ix0)))
+            setIy(Math.max(0, Math.min(ny-1, iy0)))
+            setIz(Math.max(0, Math.min(nz-1, iz0)))
+          } else {
+            const mx = Math.floor(nx/2), my = Math.floor(ny/2), mz = Math.floor(nz/2)
+            setIx(mx); setIy(my); setIz(mz)
+          }
         }
       } catch (e) {
         if (!alive) return
@@ -416,6 +446,30 @@ const coord2idx = (c_mm, n, axis) => {
   function onCanvasMouseEnter (e, axis) {
     setLockedAxes(prev => ({ ...prev, [axis]: false }))
   }
+
+  // Reset coordinates to 0,0,0 when query is cleared
+  useEffect(() => {
+    if (!query && dims[0] > 0) {
+      const [nx, ny, nz] = dims
+      const bg = bgRef.current
+      if (bg) {
+        const [vx, vy, vz] = bg.voxelMM
+        const isStd = isStandardMNI2mm([nx, ny, nz], [vx, vy, vz])
+        if (isStd) {
+          // For standard MNI, calculate indices for coordinates 0,0,0
+          const ix0 = Math.round((MNI2MM.x0 - 0) / MNI2MM.vx)
+          const iy0 = Math.round((0 - MNI2MM.y0) / MNI2MM.vy)
+          const iz0 = Math.round((0 - MNI2MM.z0) / MNI2MM.vz)
+          setIx(Math.max(0, Math.min(nx-1, ix0)))
+          setIy(Math.max(0, Math.min(ny-1, iy0)))
+          setIz(Math.max(0, Math.min(nz-1, iz0)))
+        } else {
+          const mx = Math.floor(nx/2), my = Math.floor(ny/2), mz = Math.floor(nz/2)
+          setIx(mx); setIy(my); setIz(mz)
+        }
+      }
+    }
+  }, [query, dims])
 
   // keep display coords in sync when ix/iy/iz/dims change (e.g., after loads)
   useEffect(() => {

@@ -132,27 +132,28 @@
 
 .nii-viewer__coordinate-label span {
   font-weight: 700;
-  color: #004B97;
-  font-size: 16px;
+  color: #000000;
+  font-size: 20px;
 }
 
 .nii-viewer__coordinate-input {
   width: 80px;
   padding: 4px 8px;
-  border: 1px solid #ECF5FF;
+  border: none;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
-  color: #004B97;
+  color: #EA0000;
   margin-left: 4px;
   background: white;
   cursor: text;
+  font-family: 'Libre Baskerville', serif;
 }
 
 .nii-viewer__coordinate-input:focus {
   outline: none;
-  border-color: #004B97;
-  box-shadow: 0 0 0 2px rgba(0, 75, 151, 0.1);
+  border: 1px solid #333333;
+  box-shadow: none;
 }
 
 .nii-viewer__grid {
