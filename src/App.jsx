@@ -3,6 +3,8 @@ import { QueryBuilder } from './components/QueryBuilder'
 import { Studies } from './components/Studies'
 import { NiiViewer } from './components/NiiViewer'
 import { LandingPage } from './components/LandingPage'
+import { VideoPage } from './components/VideoPage'
+import { ImageCarousel } from './components/ImageCarousel'
 import { AppHeader } from './components/AppHeader'
 import { Terms } from './components/Terms'
 import { Card, CardTitle } from './components/Card'
@@ -17,6 +19,64 @@ export default function App () {
   const [query, setQuery] = useUrlQueryState('q')
   const [resetKey, setResetKey] = useState(0) // 用於重置組件狀態
   const [showEasterEgg, setShowEasterEgg] = useState(false)
+  const landingPageRef = useRef(null)
+  const videoPageRef = useRef(null)
+
+  const carouselRef = useRef(null)
+
+  const handleScrollDown = useCallback(() => {
+    console.log('handleScrollDown called')
+    if (videoPageRef.current) {
+      videoPageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      const targetY = window.innerHeight
+      console.log('Scrolling to:', targetY)
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+      })
+    }
+  }, [])
+
+  const handleScrollUp = useCallback(() => {
+    console.log('handleScrollUp called')
+    if (landingPageRef.current) {
+      landingPageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+    }
+  }, [])
+
+  const handleScrollToCarousel = useCallback(() => {
+    console.log('handleScrollToCarousel called')
+    if (carouselRef.current) {
+      carouselRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      const targetY = window.innerHeight * 2
+      console.log('Scrolling to carousel:', targetY)
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+      })
+    }
+  }, [])
+
+  const handleScrollUpFromCarousel = useCallback(() => {
+    console.log('handleScrollUpFromCarousel called')
+    if (videoPageRef.current) {
+      videoPageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      const targetY = window.innerHeight
+      console.log('Scrolling to video page:', targetY)
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+      })
+    }
+  }, [])
 
   const handleStart = useCallback(() => {
     // 重置所有狀態
@@ -27,11 +87,12 @@ export default function App () {
   }, [setQuery])
 
   const handleLogoClick = useCallback(() => {
-    // 重置所有狀態
+    // 重置所有狀態並滾動到頂部
     setQuery('')
     setSizes([50, 50])
     setResetKey(prev => prev + 1) // 強制重新渲染組件
     setShowLanding(true)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [setQuery])
 
   const handlePickTerm = useCallback((t) => {
@@ -53,10 +114,28 @@ export default function App () {
   const sizesRef = useRef(sizes)
   const MIN_PX = 240
 
-  // 同步 sizesRef 與 sizes state
+  // Enable scrolling when showing landing/video pages
   useEffect(() => {
-    sizesRef.current = sizes
-  }, [sizes])
+    if (showLanding) {
+      // Ensure body and html allow vertical scrolling but prevent horizontal scrolling
+      document.body.style.overflowY = 'auto'
+      document.body.style.overflowX = 'hidden'
+      document.documentElement.style.overflowY = 'auto'
+      document.documentElement.style.overflowX = 'hidden'
+    } else {
+      document.body.style.overflowY = ''
+      document.body.style.overflowX = ''
+      document.documentElement.style.overflowY = ''
+      document.documentElement.style.overflowX = ''
+    }
+    
+    return () => {
+      document.body.style.overflowY = ''
+      document.body.style.overflowX = ''
+      document.documentElement.style.overflowY = ''
+      document.documentElement.style.overflowX = ''
+    }
+  }, [showLanding])
 
   const startDrag = useCallback((which, e) => {
     e.preventDefault()
@@ -130,7 +209,20 @@ export default function App () {
   }, [])
 
   if (showLanding) {
-    return <LandingPage onStart={handleStart} />
+    return (
+      <>
+        <div ref={landingPageRef} style={{ height: '100vh' }}>
+          <LandingPage onStart={handleStart} onScrollDown={handleScrollDown} />
+        </div>
+        <div ref={videoPageRef} style={{ height: '100vh' }}>
+          <VideoPage onScrollUp={handleScrollUp} onScrollDown={handleScrollToCarousel} />
+        </div>
+        <div ref={carouselRef} style={{ height: '100vh' }}>
+          <ImageCarousel onScrollUp={handleScrollUpFromCarousel} />
+        </div>
+        <div style={{ width: '100%', height: '100px', background: '#000000' }} />
+      </>
+    )
   }
 
   console.log('Rendering main app, query:', query, 'showLanding:', showLanding)

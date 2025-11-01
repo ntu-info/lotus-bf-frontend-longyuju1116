@@ -1,0 +1,81 @@
+.scroll-down-button {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  animation: bounce 2s infinite;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scroll-down-button * {
+  pointer-events: none;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(10px);
+  }
+}
+
+.scroll-down-button:hover {
+  transform: translateX(-50%) translateY(5px);
+  opacity: 0.8;
+  animation: none;
+}
+
+.scroll-down-button:active {
+  transform: translateX(-50%) translateY(8px);
+}
+
+.scroll-down-button__arrow {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.scroll-down-button:hover .scroll-down-button__arrow {
+  transform: translateY(2px);
+}
+
+.scroll-up-button {
+  top: 40px;
+  bottom: auto;
+  animation: bounceUp 2s infinite;
+}
+
+@keyframes bounceUp {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+.scroll-up-button:hover {
+  transform: translateX(-50%) translateY(-5px);
+  opacity: 0.8;
+  animation: none;
+}
+
+.scroll-up-button:active {
+  transform: translateX(-50%) translateY(-8px);
+}
+
+.scroll-up-button:hover .scroll-up-button__arrow {
+  transform: translateY(-2px);
+}
+

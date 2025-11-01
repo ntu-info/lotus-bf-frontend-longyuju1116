@@ -179,12 +179,14 @@ export function Studies ({ query }) {
           </div>
         </div>
       )}
+      {query && (
       <YearFilter 
         selectedYears={selectedYears} 
         onYearsChange={setSelectedYears}
         query={query}
         searchResults={rows}
       />
+      )}
 
       {query && !loading && !err && (
         <div className="studies__header" ref={tableTopRef}>

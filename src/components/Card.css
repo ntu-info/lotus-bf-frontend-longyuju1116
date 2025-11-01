@@ -1,18 +1,24 @@
 .card {
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 0;
   padding: 16px;
-  box-shadow: var(--shadow-sm);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card--no-border {
   border: none;
+  box-shadow: none;
 }
 
 .card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
+}
+
+.card--no-border:hover {
+  box-shadow: none;
+  transform: none;
 }
 
 .card--stack {

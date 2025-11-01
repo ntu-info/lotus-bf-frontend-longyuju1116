@@ -30,7 +30,7 @@
 
   color-scheme: light;
   color: #111827;
-  background-color: #fafafa;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -49,10 +49,15 @@ a:hover {
   color: #333333;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {

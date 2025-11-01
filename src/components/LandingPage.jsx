@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 import './LandingPage.css'
 import { Logo } from './Logo'
+import { ScrollDownButton } from './ScrollDownButton'
 
-export function LandingPage({ onStart }) {
+export function LandingPage({ onStart, onScrollDown }) {
   const canvasRef = useRef(null)
   const animationRef = useRef(null)
 
@@ -168,6 +169,10 @@ export function LandingPage({ onStart }) {
           </svg>
         </button>
       </div>
+
+      {onScrollDown && (
+        <ScrollDownButton onClick={onScrollDown} />
+      )}
     </div>
   )
 }

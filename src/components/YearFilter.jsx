@@ -8,6 +8,10 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
   const hasClearedRef = useRef(false) // 追蹤是否用戶主動清除過
   const prevQueryRef = useRef(query) // 追蹤前一個 query
   const [isDragging, setIsDragging] = useState(false) // 追蹤是否正在拖拽選擇
+  const dragStartRef = useRef(null) // 追蹤拖拽開始位置
+  const [isDragActive, setIsDragActive] = useState(false) // 追蹤是否開始拖拽檢測
+  const clickedBarRef = useRef(null) // 追蹤點擊的 bar
+  const hasDraggedRef = useRef(false) // 追蹤是否真的拖拽了
 
   // 獲取所有 studies 的年份統計（只在組件掛載時執行一次）
   useEffect(() => {
@@ -185,12 +189,9 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
   const handleMouseDown = (e) => {
     // 只響應左鍵
     if (e.button === 0) {
-      setIsDragging(true)
+      dragStartRef.current = { x: e.clientX, y: e.clientY }
+      setIsDragActive(true)
     }
-  }
-
-  const handleMouseUp = () => {
-    setIsDragging(false)
   }
 
   const handleMouseEnter = (year) => {
@@ -207,19 +208,47 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
     }
   }
 
-  // 添加全局事件監聽器來處理滑鼠釋放
+  // 添加全局事件監聽器來處理滑鼠移動和釋放
   useEffect(() => {
-    const handleGlobalMouseUp = () => {
-      setIsDragging(false)
-    }
+    if (!isDragActive) return
 
-    if (isDragging) {
-      window.addEventListener('mouseup', handleGlobalMouseUp)
-      return () => {
-        window.removeEventListener('mouseup', handleGlobalMouseUp)
+    const handleGlobalMouseMove = (e) => {
+      if (dragStartRef.current && !isDragging) {
+        const dx = e.clientX - dragStartRef.current.x
+        const dy = e.clientY - dragStartRef.current.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        // 只有移動超過 5px 才認為是拖拽
+        if (distance > 5) {
+          setIsDragging(true)
+          hasDraggedRef.current = true
+          // 如果開始拖拽，清除點擊的 bar
+          clickedBarRef.current = null
+        }
       }
     }
-  }, [isDragging])
+
+    const handleGlobalMouseUp = () => {
+      // 如果沒有真的拖拽，且有點擊的 bar，執行點擊
+      if (!hasDraggedRef.current && clickedBarRef.current !== null) {
+        toggleYear(clickedBarRef.current)
+      }
+      
+      // 重置所有狀態
+      setIsDragging(false)
+      setIsDragActive(false)
+      dragStartRef.current = null
+      clickedBarRef.current = null
+      hasDraggedRef.current = false
+    }
+
+    window.addEventListener('mousemove', handleGlobalMouseMove)
+      window.addEventListener('mouseup', handleGlobalMouseUp)
+    
+      return () => {
+      window.removeEventListener('mousemove', handleGlobalMouseMove)
+        window.removeEventListener('mouseup', handleGlobalMouseUp)
+    }
+  }, [isDragActive, isDragging])
 
   return (
     <div className="year-filter">
@@ -281,8 +310,12 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
         <div 
           className="year-filter__chart"
           onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
+          onMouseLeave={() => {
+            if (!isDragging) {
+              setIsDragActive(false)
+              dragStartRef.current = null
+            }
+          }}
         >
             {yearStats.map(({ year, count }) => {
               // 圖表實際可用高度：120px (總高度) - 24px (top padding) - 20px (bottom padding) = 76px
@@ -302,7 +335,19 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
                         '--bar-color': color,
                         height: `${barHeight}px`
                       }}
-                      onClick={() => toggleYear(year)}
+                      onClick={(e) => {
+                        // 阻止默認行為和冒泡，點擊會在 mouseup 時處理
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }}
+                      onMouseDown={(e) => {
+                        // 記錄點擊的 bar 和起始位置
+                        if (e.button === 0 && !dragStartRef.current) {
+                          clickedBarRef.current = year
+                          dragStartRef.current = { x: e.clientX, y: e.clientY }
+                          setIsDragActive(true)
+                        }
+                      }}
                       onMouseEnter={() => handleMouseEnter(year)}
                       title={`${year}: ${count} studies`}
                     >

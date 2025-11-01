@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@niivue/niivue": "^0.62.1",
+    "@splidejs/react-splide": "^0.7.12",
+    "@splidejs/splide": "^4.1.4",
     "nifti-reader-js": "^0.8.0",
     "pako": "^2.1.0",
     "react": "^19.2.0",
