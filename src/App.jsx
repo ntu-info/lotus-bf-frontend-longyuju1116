@@ -147,7 +147,6 @@ export default function App () {
         <Card className="card--stack card--no-border" style={{ flexBasis: `${sizes[0]}%` }}>
           <CardTitle>Query Builder</CardTitle>
           <QueryBuilder key={`querybuilder-${resetKey}`} query={query} setQuery={setQuery} />
-          <CardTitle>Studies</CardTitle>
           <Studies key={`studies-${resetKey}`} query={query} />
         </Card>
 

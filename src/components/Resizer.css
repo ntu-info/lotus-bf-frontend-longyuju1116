@@ -12,12 +12,12 @@
 }
 
 .resizer:hover {
-  background: linear-gradient(to right, transparent 0%, #ECF5FF 50%, transparent 100%);
+  background: linear-gradient(to right, transparent 0%, #E0E0E0 50%, transparent 100%);
   width: 16px;
 }
 
 .resizer--dragging {
-  background: linear-gradient(to right, transparent 0%, #ECF5FF 50%, transparent 100%);
+  background: linear-gradient(to right, transparent 0%, #E0E0E0 50%, transparent 100%);
   width: 16px;
 }
 

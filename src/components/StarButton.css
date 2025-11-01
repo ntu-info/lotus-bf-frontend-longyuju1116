@@ -1,0 +1,36 @@
+.star-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.star-button:hover {
+  transform: scale(1.2);
+}
+
+.star-button:active {
+  transform: scale(0.9);
+}
+
+.star-button__icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.star-button__icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+

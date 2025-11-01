@@ -3,8 +3,19 @@ import './Studies.css'
 import { PageSizeSelector } from './PageSizeSelector'
 import { YearFilter } from './YearFilter'
 import { Pagination } from './Pagination'
+import { StarButton } from './StarButton'
+import { ExportButton } from './ExportButton'
+import { ClearStarButton } from './ClearStarButton'
 
 function classNames (...xs) { return xs.filter(Boolean).join(' ') }
+
+// Helper function to get unique study ID
+const getStudyId = (study) => {
+  return study.study_id || study.id || study.pubmed_id || `${study.year}_${study.title}`
+}
+
+// localStorage key for marked studies
+const MARKED_STUDIES_KEY = 'lotus-bf-marked-studies'
 
 export function Studies ({ query }) {
   const [rows, setRows] = useState([])
@@ -15,7 +26,57 @@ export function Studies ({ query }) {
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)
   const [selectedYears, setSelectedYears] = useState([])
+  const [markedStudies, setMarkedStudies] = useState(new Set())
   const tableTopRef = useRef(null)
+
+  // Load marked studies from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(MARKED_STUDIES_KEY)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        setMarkedStudies(new Set(parsed))
+      }
+    } catch (e) {
+      console.error('Failed to load marked studies:', e)
+    }
+  }, [])
+
+  // Save marked studies to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(MARKED_STUDIES_KEY, JSON.stringify(Array.from(markedStudies)))
+    } catch (e) {
+      console.error('Failed to save marked studies:', e)
+    }
+  }, [markedStudies])
+
+  // Toggle study marking
+  const toggleMark = (study) => {
+    const studyId = getStudyId(study)
+    setMarkedStudies(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(studyId)) {
+        newSet.delete(studyId)
+      } else {
+        newSet.add(studyId)
+      }
+      return newSet
+    })
+  }
+
+  // Clear all markings
+  const clearAllMarks = () => {
+    setMarkedStudies(new Set())
+  }
+
+  // Get marked studies data for export
+  const markedStudiesData = useMemo(() => {
+    return rows.filter(study => {
+      const studyId = getStudyId(study)
+      return markedStudies.has(studyId)
+    })
+  }, [rows, markedStudies])
 
   // Helper function to get PubMed URL
   const getPubMedUrl = (studyId) => {
@@ -109,6 +170,15 @@ export function Studies ({ query }) {
 
   return (
     <div className="studies">
+      {query && !loading && !err && (
+        <div className="studies__title-bar">
+          <h2 className="studies__title">Studies</h2>
+          <div className="studies__title-actions">
+            <ExportButton markedStudies={markedStudiesData} />
+            <ClearStarButton onClick={clearAllMarks} />
+          </div>
+        </div>
+      )}
       <YearFilter 
         selectedYears={selectedYears} 
         onYearsChange={setSelectedYears}
@@ -152,7 +222,7 @@ export function Studies ({ query }) {
             <thead className="studies__thead">
               <tr>
                 <th 
-                  className="studies__th"
+                  className="studies__th studies__th--year"
                   onClick={() => changeSort('year')}
                 >
                   <span className="studies__th-content">
@@ -161,6 +231,9 @@ export function Studies ({ query }) {
                       {sortKey === 'year' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
                     </span>
                   </span>
+                </th>
+                <th className="studies__th studies__th--title">
+                  <span className="studies__th-content">Title</span>
                 </th>
               </tr>
             </thead>
@@ -175,6 +248,8 @@ export function Studies ({ query }) {
                 pageRows.map((r, i) => {
                   const globalIndex = (page - 1) * pageSize + i
                   const pubmedUrl = getPubMedUrl(r.study_id || r.id || r.pubmed_id)
+                  const studyId = getStudyId(r)
+                  const isMarked = markedStudies.has(studyId)
                   return (
                     <>
                       <tr 
@@ -185,7 +260,13 @@ export function Studies ({ query }) {
                         )}
                       >
                         <td className="studies__td studies__td--year">
-                          {r.year ?? ''}
+                          <div className="studies__year-cell">
+                            <div className="studies__year-value">{r.year ?? ''}</div>
+                            <StarButton 
+                              isMarked={isMarked}
+                              onClick={() => toggleMark(r)}
+                            />
+                          </div>
                         </td>
                         <td className="studies__td studies__td--title">
                           <div className="studies__title-cell" title={r.title}>

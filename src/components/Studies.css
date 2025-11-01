@@ -4,6 +4,29 @@
   flex-direction: column;
 }
 
+.studies__title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+}
+
+.studies__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fg-dark);
+}
+
+.studies__title-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .studies__header {
   display: flex;
   align-items: center;
@@ -141,15 +164,39 @@
   border-bottom: none;
 }
 
-.studies__td--year {
-  white-space: nowrap;
-  width: 60px;
+.studies__th--title {
+  cursor: default;
+}
+
+.studies__th--title:hover {
+  background: transparent;
+}
+
+.studies__th--year {
+  width: 80px;
+  min-width: 80px;
   text-align: center;
 }
 
-.studies__th:first-child {
+.studies__td--year {
+  white-space: nowrap;
+  width: 80px;
+  min-width: 80px;
   text-align: center;
-  width: 60px;
+  vertical-align: top;
+}
+
+.studies__year-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  min-height: 60px;
+}
+
+.studies__year-value {
+  font-weight: 600;
 }
 
 .studies__td--title {
@@ -162,7 +209,7 @@
   padding-top: 12px;
   padding-right: 12px;
   padding-bottom: 12px;
-  padding-left: 96px;
+  padding-left: 116px;
   background: transparent;
 }
 

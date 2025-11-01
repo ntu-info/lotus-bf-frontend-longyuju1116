@@ -6,7 +6,7 @@
   margin-bottom: 20px;
   padding-bottom: 16px;
   border-bottom: 2px solid var(--border);
-  background: #C7C7E2;
+  background: #000000;
   border-radius: 0;
   padding: 16px 20px;
   box-shadow: var(--shadow-sm);
@@ -48,7 +48,7 @@
   font-size: 24px;
   font-weight: 800;
   letter-spacing: 0.2px;
-  color: var(--fg-dark);
+  color: #ffffff;
 }
 
 .app-header__subtitle {
