@@ -1,70 +1,68 @@
-import { useState, useEffect } from 'react'
 import './ScrollButtons.css'
 
 /**
- * ScrollButtons component - Buttons to scroll to top and bottom of the page
+ * ScrollButtons component - persistent scroll controls for entire app
  */
 export function ScrollButtons() {
-  const [showTop, setShowTop] = useState(false)
-  const [showBottom, setShowBottom] = useState(false)
+  const getScrollRoot = () => {
+    if (typeof document === 'undefined') {
+      return null
+    }
+    return document.scrollingElement ?? document.documentElement ?? document.body
+  }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-      const windowHeight = window.innerHeight
-      const documentHeight = document.documentElement.scrollHeight
-      
-      // 當滾動超過一定距離時顯示向上按鈕
-      setShowTop(scrollTop > 300)
-      
-      // 當未滾動到底部時顯示向下按鈕
-      setShowBottom(scrollTop + windowHeight < documentHeight - 100)
+  const smoothScroll = (top) => {
+    if (typeof window === 'undefined') {
+      return
     }
 
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // 初始檢查
+    window.requestAnimationFrame(() => {
+      window.scrollTo({
+        top,
+        behavior: 'smooth'
+      })
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+      if (typeof document !== 'undefined') {
+        if (document.body) {
+          document.body.scrollTop = top
+        }
+        if (document.documentElement) {
+          document.documentElement.scrollTop = top
+        }
+      }
     })
   }
 
+  const scrollToTop = () => {
+    smoothScroll(0)
+  }
+
   const scrollToBottom = () => {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
-    })
+    const scrollRoot = getScrollRoot()
+    if (!scrollRoot || typeof window === 'undefined') {
+      return
+    }
+
+    const viewportHeight = window.innerHeight || scrollRoot.clientHeight
+    const currentScroll = scrollRoot.scrollTop ?? window.pageYOffset ?? document.documentElement?.scrollTop ?? 0
+    const maxScrollTop = Math.max(0, scrollRoot.scrollHeight - viewportHeight)
+    const nextScroll = Math.min(currentScroll + viewportHeight, maxScrollTop)
+
+    smoothScroll(nextScroll)
   }
 
   return (
     <div className="scroll-buttons">
-      {showTop && (
-        <button
-          className="scroll-button scroll-button--top"
-          onClick={scrollToTop}
-          aria-label="Scroll to top"
-          title="Scroll to top"
-        >
-          <span className="scroll-button__arrow scroll-button__arrow--up">&#60;</span>
-        </button>
-      )}
-      {showBottom && (
-        <button
-          className="scroll-button scroll-button--bottom"
-          onClick={scrollToBottom}
-          aria-label="Scroll to bottom"
-          title="Scroll to bottom"
-        >
-          <span className="scroll-button__arrow scroll-button__arrow--down">&#60;</span>
-        </button>
-      )}
+
+      <button
+        className="scroll-button scroll-button--bottom"
+        type="button"
+        onClick={scrollToBottom}
+        aria-label="Scroll to bottom"
+        title="Scroll to bottom"
+      >
+        <span className="scroll-button__arrow scroll-button__arrow--down">&#60;</span>
+      </button>
     </div>
   )
 }

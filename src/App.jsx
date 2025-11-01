@@ -23,7 +23,27 @@ export default function App () {
   const videoPageRef = useRef(null)
 
   const carouselRef = useRef(null)
+  // 【新增】全局滾動到底部
+  const scrollToBottom = useCallback(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return
+    }
+    // 計算最大可滾動的位置：整個文件高度 - 視窗高度
+    const maxScrollTop = document.documentElement.scrollHeight - window.innerHeight
+    window.scrollTo({
+      top: maxScrollTop,
+      behavior: 'smooth'
+    })
+  }, [])
 
+  // 【新增】全局滾動到頂部
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }, [])
+  
   const handleScrollDown = useCallback(() => {
     console.log('handleScrollDown called')
     if (videoPageRef.current) {
@@ -208,8 +228,13 @@ export default function App () {
     window.addEventListener('mouseup', onMouseUp)
   }, [])
 
-  if (showLanding) {
+  if (!showLanding) {
+    console.log('Rendering main app, query:', query, 'showLanding:', showLanding)
+  }
+
     return (
+    <>
+      {showLanding ? (
       <>
         <div ref={landingPageRef} style={{ height: '100vh' }}>
           <LandingPage onStart={handleStart} onScrollDown={handleScrollDown} />
@@ -222,12 +247,7 @@ export default function App () {
         </div>
         <div style={{ width: '100%', height: '100px', background: '#000000' }} />
       </>
-    )
-  }
-
-  console.log('Rendering main app, query:', query, 'showLanding:', showLanding)
-
-  return (
+      ) : (
     <div className="app">
       <AppHeader onLogoClick={handleLogoClick} />
       
@@ -252,8 +272,10 @@ export default function App () {
           <NiiViewer key={`niiviewer-${resetKey}`} query={query} />
         </Card>
       </main>
-      <ScrollButtons />
-      {showEasterEgg && <EasterEgg onClose={handleCloseEasterEgg} />}
-    </div>
+          {showEasterEgg && <EasterEgg onClose={handleCloseEasterEgg} />}
+        </div>
+      )}
+      <ScrollButtons onScrollToTop={scrollToTop} onScrollToBottom={scrollToBottom} />
+    </>
   )
 }
