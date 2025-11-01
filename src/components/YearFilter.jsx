@@ -155,6 +155,7 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
     } else {
       newSelected.add(yearStr)
     }
+    hasClearedRef.current = true
     onYearsChange(Array.from(newSelected))
   }
 
@@ -178,6 +179,7 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
       .filter(s => s.year >= startYear && s.year <= maxYear)
       .map(s => String(s.year))
     
+    hasClearedRef.current = true
     onYearsChange(recentYears)
   }
 
