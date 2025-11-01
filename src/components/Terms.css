@@ -1,0 +1,228 @@
+.terms {
+  width: 100%;
+}
+
+.terms__header {
+  margin-bottom: 16px;
+}
+
+.terms__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--fg-dark);
+}
+
+.terms__controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  width: 100%;
+  align-items: stretch;
+}
+
+.terms__input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.terms__input {
+  flex: 1;
+  padding: 12px 40px 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  width: 100%;
+  min-width: 0;
+}
+
+.terms__input:focus {
+  outline: none;
+  border-color: var(--fg-dark);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.terms__clear-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666 !important;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  opacity: 1;
+}
+
+.terms__clear-icon:hover {
+  color: #666 !important;
+}
+
+.terms__clear-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  color: inherit;
+}
+
+.terms__clear-icon svg path {
+  fill: currentColor;
+}
+
+.terms__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.terms__skeleton-row {
+  height: 40px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.terms__error {
+  padding: 12px;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c33;
+  font-size: 13px;
+}
+
+.terms__list {
+  margin-bottom: 16px;
+}
+
+.terms__container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.terms__empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.terms__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.terms__name {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  color: var(--fg);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: none;
+  background: radial-gradient(circle, rgba(196, 225, 255, 0.4), rgba(255, 255, 255, 0.2));
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.terms__name:hover {
+  background: radial-gradient(circle, rgba(196, 225, 255, 0.5), rgba(255, 255, 255, 0.3));
+  color: var(--fg);
+  border: none;
+  transform: translateY(-1px);
+}
+
+.terms__pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  gap: 16px;
+}
+
+.terms__pagination-info {
+  font-size: 13px;
+  color: var(--fg);
+}
+
+.terms__pagination-info b {
+  color: var(--fg-dark);
+  font-weight: 600;
+}
+
+.terms__page-input {
+  width: 50px;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+  background: white;
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.terms__page-input:focus {
+  outline: none;
+}
+
+.terms__pagination-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.terms__pagination-button {
+  padding: 6px 12px;
+  background: var(--fg-dark);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.terms__pagination-button:hover:not(:disabled) {
+  background: var(--muted);
+  transform: translateY(-1px);
+}
+
+.terms__pagination-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .terms__controls {
+    flex-direction: column;
+  }
+}
+

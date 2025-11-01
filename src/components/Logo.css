@@ -1,0 +1,37 @@
+.logo-container {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: filter 0.3s ease;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.2));
+}
+
+/* Landing page specific positioning */
+.logo-container.logo--landing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+}
+

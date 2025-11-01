@@ -1,0 +1,292 @@
+.studies {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.studies__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.studies__header-info {
+  color: var(--fg);
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.studies__header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.studies__page-input {
+  width: 50px;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+  background: white;
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.studies__page-input:focus {
+  outline: none;
+}
+
+.studies__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+}
+
+.studies__skeleton-row {
+  height: 40px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.studies__error {
+  margin: 0 12px 12px;
+  padding: 12px;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c33;
+  font-size: 13px;
+}
+
+.studies__table-wrapper {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.studies__table {
+  width: 100%;
+  font-size: 13px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.studies__thead {
+  position: sticky;
+  top: 0;
+  background: transparent;
+  z-index: 10;
+}
+
+.studies__th {
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  user-select: none;
+  border-bottom: none;
+  transition: background 0.15s ease;
+}
+
+.studies__th:not(.studies__th--no-sort) {
+  cursor: pointer;
+}
+
+.studies__th:not(.studies__th--no-sort):hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.studies__th--no-sort {
+  cursor: default;
+}
+
+.studies__th-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.studies__sort-indicator {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.studies__tr {
+  transition: background 0.15s ease;
+}
+
+.studies__tr--detail {
+  background: transparent;
+}
+
+.studies__tr--odd {
+  background: transparent;
+}
+
+.studies__tr--even {
+  background: transparent;
+}
+
+.studies__td {
+  padding: 8px 12px;
+  vertical-align: top;
+  border-bottom: none;
+}
+
+.studies__td--year {
+  white-space: nowrap;
+  width: 60px;
+  text-align: center;
+}
+
+.studies__th:first-child {
+  text-align: center;
+  width: 60px;
+}
+
+.studies__td--title {
+  width: auto;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.studies__td--detail {
+  padding-top: 12px;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  padding-left: 96px;
+  background: transparent;
+}
+
+.studies__detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.studies__detail-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.studies__detail-label {
+  font-weight: 600;
+  color: var(--fg-dark);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.studies__detail-value {
+  color: var(--fg);
+  flex: 1;
+}
+
+.studies__title-cell {
+  overflow: visible;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.5;
+  font-size: 17px;
+  font-weight: 700;
+  color: #004B97;
+}
+
+.studies__empty-cell {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.studies__pubmed-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #006400;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.studies__pubmed-link:hover {
+  color: #228B22;
+  text-decoration: underline;
+}
+
+.studies__pubmed-link svg {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.studies__pubmed-link:hover svg {
+  opacity: 1;
+}
+
+.studies__no-pubmed {
+  color: var(--muted);
+}
+
+.studies__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  padding: 12px;
+  font-size: 13px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.studies__pagination-info {
+  color: var(--fg);
+}
+
+.studies__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.studies__pagination-button {
+  padding: 6px 12px;
+  background: var(--fg-dark);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.studies__pagination-button:hover:not(:disabled) {
+  background: var(--muted);
+  transform: translateY(-1px);
+}
+
+.studies__pagination-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+

@@ -1,0 +1,43 @@
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card--no-border {
+  border: none;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.card--stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.card__title {
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 20px;
+  color: var(--fg-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card--stack .query-builder + .card__title {
+  margin-top: 32px;
+}
+
+.card__divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 16px 0;
+}
+

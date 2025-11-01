@@ -1,0 +1,37 @@
+.resizer {
+  width: 8px;
+  cursor: col-resize;
+  position: relative;
+  user-select: none;
+  touch-action: none;
+  align-self: stretch;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.resizer:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.resizer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 3px;
+  width: 2px;
+  background: var(--border);
+  transition: background 0.15s ease, width 0.15s ease;
+}
+
+.resizer:hover::after {
+  background: var(--fg-dark);
+  width: 3px;
+}
+
+@media (max-width: 1023px) {
+  .resizer {
+    display: none;
+  }
+}
+

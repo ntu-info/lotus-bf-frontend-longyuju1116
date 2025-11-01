@@ -1,0 +1,30 @@
+.app-grid {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-grid > div {
+  flex: 1 1 0;
+  min-width: 240px;
+  overflow: auto;
+}
+
+@media (max-width: 1023px) {
+  .app-grid {
+    flex-direction: column;
+  }
+}
+

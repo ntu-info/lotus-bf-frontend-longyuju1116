@@ -1,0 +1,240 @@
+.locations {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.locations__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.locations__title {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--fg-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.locations__title::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: var(--fg-dark);
+  border-radius: 2px;
+}
+
+.locations__header-text {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.locations__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  padding: 0 12px 8px;
+  font-size: 13px;
+}
+
+.locations__control {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.locations__input {
+  width: 96px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.locations__input:focus {
+  outline: none;
+  border-color: var(--fg-dark);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.locations__empty {
+  padding: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.locations__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+}
+
+.locations__skeleton-row {
+  height: 40px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.locations__error {
+  margin: 0 12px 12px;
+  padding: 12px;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c33;
+  font-size: 13px;
+}
+
+.locations__table-wrapper {
+  overflow: auto;
+}
+
+.locations__table {
+  width: 100%;
+  font-size: 13px;
+  border-collapse: collapse;
+}
+
+.locations__thead {
+  position: sticky;
+  top: 0;
+  background: var(--bg-light);
+  z-index: 10;
+}
+
+.locations__th {
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 2px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.locations__th:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.locations__th-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.locations__sort-indicator {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.locations__tr {
+  transition: background 0.15s ease;
+}
+
+.locations__tr--odd {
+  background: white;
+}
+
+.locations__tr--even {
+  background: var(--bg-light);
+}
+
+.locations__tr:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.locations__td {
+  padding: 8px 12px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+
+.locations__empty-cell {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.locations__pubmed-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--fg-dark);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.locations__pubmed-link:hover {
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.locations__pubmed-link svg {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.locations__pubmed-link:hover svg {
+  opacity: 1;
+}
+
+.locations__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  padding: 12px;
+  font-size: 13px;
+}
+
+.locations__pagination-info {
+  color: var(--fg);
+}
+
+.locations__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.locations__pagination-button {
+  padding: 6px 12px;
+  background: var(--fg-dark);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.locations__pagination-button:hover:not(:disabled) {
+  background: var(--muted);
+  transform: translateY(-1px);
+}
+
+.locations__pagination-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
