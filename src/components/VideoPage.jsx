@@ -151,7 +151,7 @@ export function VideoPage({ onScrollUp, onScrollDown }) {
       <video
         ref={videoRef}
         className="video-page__video"
-        src="/lotus-bf/ad.mp4"
+        src={`${import.meta.env.BASE_URL}ad.mp4`}
         autoPlay
         muted
         playsInline

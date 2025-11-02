@@ -113,7 +113,7 @@ export function Studies ({ query }) {
       setLoading(true)
       setErr('')
       try {
-        const url = `/query/${encodeURIComponent(query)}/studies`
+        const url = `https://mil.psy.ntu.edu.tw:5000/query/${encodeURIComponent(query)}/studies`
         const res = await fetch(url, { signal: ac.signal })
         const data = await res.json().catch(() => ({}))
         if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`)

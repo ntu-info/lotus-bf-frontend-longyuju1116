@@ -19,7 +19,7 @@ export function Terms ({ onPickTerm, onEasterEgg }) {
       setLoading(true)
       setErr('')
       try {
-        const res = await fetch('/terms', { signal: ac.signal })
+        const res = await fetch('https://mil.psy.ntu.edu.tw:5000/terms', { signal: ac.signal })
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const data = await res.json()
         if (!alive) return

@@ -23,7 +23,7 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
       try {
         // 方法1: 嘗試專門的統計 endpoint
         try {
-          const res1 = await fetch('/query/years/stats', { signal: ac.signal })
+          const res1 = await fetch('https://mil.psy.ntu.edu.tw:5000/query/years/stats', { signal: ac.signal })
           if (res1.ok) {
             const data = await res1.json().catch(() => null)
             if (data && Array.isArray(data.years)) {
@@ -43,7 +43,7 @@ export function YearFilter({ selectedYears, onYearsChange, query, searchResults 
         
         // 方法2: 嘗試獲取所有數據並統計
         try {
-          const res2 = await fetch('/query/all/studies', { signal: ac.signal })
+          const res2 = await fetch('https://mil.psy.ntu.edu.tw:5000/query/all/studies', { signal: ac.signal })
           if (res2.ok) {
             const responseData = await res2.json().catch(() => ({}))
             const list = Array.isArray(responseData?.results) ? responseData.results : []

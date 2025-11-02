@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import './NiiViewer.css'
 import * as nifti from 'nifti-reader-js'
 
-const MNI_BG_URL = 'static/mni_2mm.nii.gz'
+const MNI_BG_URL = `${import.meta.env.BASE_URL}static/mni_2mm.nii.gz`
 
 // Detect MNI152 2mm template dims & spacing (91x109x91, 2mm iso)
 function isStandardMNI2mm(dims, voxelMM) {
@@ -72,12 +72,12 @@ export function NiiViewer({ query }) {
 
   const mapUrl = useMemo(() => {
     if (!query) return ''
-    const u = new URL(`/query/${encodeURIComponent(query)}/nii`, window.location.origin)
+    const u = new URL(`/query/${encodeURIComponent(query)}/nii`, 'https://mil.psy.ntu.edu.tw:5000')
     u.searchParams.set('voxel', String(voxel))
     u.searchParams.set('fwhm', String(fwhm))
     u.searchParams.set('kernel', String(kernel))
     u.searchParams.set('r', String(r))
-    return u.pathname + u.search
+    return u.toString()
   }, [query, voxel, fwhm, kernel, r])
 
   // ---------- utils ----------

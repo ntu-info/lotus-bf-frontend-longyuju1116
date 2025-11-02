@@ -18,7 +18,7 @@ export function ImageCarousel({ onScrollUp }) {
   // Load all images from /demo folder
   const images = []
   for (let i = 0; i <= 8; i++) {
-    images.push(`/lotus-bf/demo/${i}.jpg`)
+    images.push(`${import.meta.env.BASE_URL}demo/${i}.jpg`)
   }
 
   const handleScrollUpClick = () => {
