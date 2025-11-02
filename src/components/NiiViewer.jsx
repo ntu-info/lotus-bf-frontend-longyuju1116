@@ -6,7 +6,12 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import './NiiViewer.css'
 import * as nifti from 'nifti-reader-js'
 
-const MNI_BG_URL = `${import.meta.env.BASE_URL}static/mni_2mm.nii.gz`
+// Get BASE_URL with proper handling
+const getBaseUrl = () => {
+  const base = import.meta.env.BASE_URL || ''
+  return base.endsWith('/') ? base : base + '/'
+}
+const MNI_BG_URL = `${getBaseUrl()}static/mni_2mm.nii.gz`
 
 // Detect MNI152 2mm template dims & spacing (91x109x91, 2mm iso)
 function isStandardMNI2mm(dims, voxelMM) {

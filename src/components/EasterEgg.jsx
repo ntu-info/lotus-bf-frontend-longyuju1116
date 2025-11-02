@@ -100,7 +100,7 @@ export function EasterEgg({ onClose }) {
       <canvas ref={canvasRef} className="easter-egg__canvas" />
       <div className="easter-egg__content">
         <img 
-          src={`${import.meta.env.BASE_URL}LoTUS.png`} 
+          src={`${import.meta.env.BASE_URL || ''}LoTUS.png`} 
           alt="LoTUS" 
           className={`easter-egg__image ${imageLoaded ? 'easter-egg__image--loaded' : ''}`}
           onLoad={() => setImageLoaded(true)}

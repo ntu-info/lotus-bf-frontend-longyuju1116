@@ -5,7 +5,7 @@ export function AppHeader({ onLogoClick }) {
     <header className="app-header">
       <div className="app-header__content">
         <img 
-          src={`${import.meta.env.BASE_URL}logo.svg`} 
+          src={`${import.meta.env.BASE_URL || ''}logo.svg`} 
           alt="LoTUS Logo" 
           className="app-header__logo"
           onClick={onLogoClick}

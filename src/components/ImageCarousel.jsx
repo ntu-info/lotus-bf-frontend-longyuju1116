@@ -16,9 +16,14 @@ export function ImageCarousel({ onScrollUp }) {
   const animationRef = useRef(null)
   
   // Load all images from /demo folder
+  // Use BASE_URL from Vite config, fallback to empty string for root
+  const baseUrl = import.meta.env.BASE_URL || ''
   const images = []
   for (let i = 0; i <= 8; i++) {
-    images.push(`${import.meta.env.BASE_URL}demo/${i}.jpg`)
+    // Ensure baseUrl ends with / and path doesn't start with /
+    const cleanBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'
+    const cleanPath = `demo/${i}.jpg`.replace(/^\//, '')
+    images.push(`${cleanBase}${cleanPath}`)
   }
 
   const handleScrollUpClick = () => {
